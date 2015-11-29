@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04B9FFC61C0BB02D009E38AF /* BarcinLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B9FFC51C0BB02D009E38AF /* BarcinLineChartView.swift */; };
 		06AEE7A71BDC3F8B009875AE /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BA8EC401A9D14DC00CE82E1 /* Charts.framework */; };
 		06AEE7AE1BDC3FC6009875AE /* LineChartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AEE7AD1BDC3FC6009875AE /* LineChartTests.swift */; };
 		06AEE7C21BDC4277009875AE /* FBSnapshotTestCase.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06AEE7C11BDC4277009875AE /* FBSnapshotTestCase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -221,6 +222,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04B9FFC51C0BB02D009E38AF /* BarcinLineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcinLineChartView.swift; sourceTree = "<group>"; };
 		06AEE7A21BDC3F8B009875AE /* ChartsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChartsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06AEE7A61BDC3F8B009875AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06AEE7AD1BDC3FC6009875AE /* LineChartTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartTests.swift; sourceTree = "<group>"; };
@@ -349,6 +351,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04B9FFC41C0BB004009E38AF /* BarcinCharts */ = {
+			isa = PBXGroup;
+			children = (
+				04B9FFC51C0BB02D009E38AF /* BarcinLineChartView.swift */,
+			);
+			name = BarcinCharts;
+			sourceTree = "<group>";
+		};
 		06AEE7A31BDC3F8B009875AE /* ChartsTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -460,6 +470,7 @@
 		5BA8EC651A9D151C00CE82E1 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				04B9FFC41C0BB004009E38AF /* BarcinCharts */,
 				5B6A546C1AA5D2D0000F57C2 /* Animation */,
 				5BA8EC661A9D151C00CE82E1 /* Charts */,
 				5BA8EC691A9D151C00CE82E1 /* Components */,
@@ -795,6 +806,7 @@
 				5B8FE2B11B68FFF900910C9E /* LineScatterCandleRadarChartRenderer.swift in Sources */,
 				5B6A54D51AA74516000F57C2 /* ChartData.swift in Sources */,
 				5BD4C57E1BCDBF6C00462351 /* BubbleChartDataProvider.swift in Sources */,
+				04B9FFC61C0BB02D009E38AF /* BarcinLineChartView.swift in Sources */,
 				5B6A54971AA66AD2000F57C2 /* BarChartRenderer.swift in Sources */,
 				5B6A546B1AA5C23F000F57C2 /* ChartMarker.swift in Sources */,
 				5B6A54D61AA74516000F57C2 /* ChartDataEntry.swift in Sources */,
