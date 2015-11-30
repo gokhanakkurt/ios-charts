@@ -361,7 +361,7 @@ public class LineChartRenderer: LineScatterCandleRadarChartRenderer
     }
     
     /// Generates the path that is used for filled drawing.
-    private func generateFilledPath(entries: [ChartDataEntry], fillMin: CGFloat, from: Int, to: Int, var matrix: CGAffineTransform) -> CGPath
+    public func generateFilledPath(entries: [ChartDataEntry], fillMin: CGFloat, from: Int, to: Int, var matrix: CGAffineTransform) -> CGPath
     {
         let phaseX = _animator.phaseX
         let phaseY = _animator.phaseY

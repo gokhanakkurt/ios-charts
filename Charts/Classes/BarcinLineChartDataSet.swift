@@ -8,6 +8,16 @@
 
 import Foundation
 
-class BarcinLineChartDataSet : LineChartDataSet {
+public class BarcinLineChartDataSet : LineChartDataSet {
+    public var gradientColors : CFArray = []
     
+    public var highlightGradientColors : CFArray = []
+    
+    public var fillGradientEnabled = false
+    
+    public var highlightLineColor : UIColor?
+    
+    public var isFillGradientEnabled : Bool {
+        return fillGradientEnabled
+    }
 }
