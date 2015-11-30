@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		04B9FFC61C0BB02D009E38AF /* BarcinLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B9FFC51C0BB02D009E38AF /* BarcinLineChartView.swift */; };
+		04B9FFCA1C0C2E23009E38AF /* BarcinLineChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B9FFC91C0C2E23009E38AF /* BarcinLineChartRenderer.swift */; };
+		04B9FFCD1C0C2F2E009E38AF /* BarcinLineChartDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B9FFCC1C0C2F2E009E38AF /* BarcinLineChartDataSet.swift */; };
 		06AEE7A71BDC3F8B009875AE /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BA8EC401A9D14DC00CE82E1 /* Charts.framework */; };
 		06AEE7AE1BDC3FC6009875AE /* LineChartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AEE7AD1BDC3FC6009875AE /* LineChartTests.swift */; };
 		06AEE7C21BDC4277009875AE /* FBSnapshotTestCase.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06AEE7C11BDC4277009875AE /* FBSnapshotTestCase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -223,6 +225,8 @@
 
 /* Begin PBXFileReference section */
 		04B9FFC51C0BB02D009E38AF /* BarcinLineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcinLineChartView.swift; sourceTree = "<group>"; };
+		04B9FFC91C0C2E23009E38AF /* BarcinLineChartRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcinLineChartRenderer.swift; sourceTree = "<group>"; };
+		04B9FFCC1C0C2F2E009E38AF /* BarcinLineChartDataSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcinLineChartDataSet.swift; sourceTree = "<group>"; };
 		06AEE7A21BDC3F8B009875AE /* ChartsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChartsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06AEE7A61BDC3F8B009875AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06AEE7AD1BDC3FC6009875AE /* LineChartTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartTests.swift; sourceTree = "<group>"; };
@@ -354,9 +358,35 @@
 		04B9FFC41C0BB004009E38AF /* BarcinCharts */ = {
 			isa = PBXGroup;
 			children = (
-				04B9FFC51C0BB02D009E38AF /* BarcinLineChartView.swift */,
+				04B9FFCB1C0C2F21009E38AF /* Data */,
+				04B9FFC81C0C2E12009E38AF /* Renderers */,
+				04B9FFC71C0C2E0A009E38AF /* Charts */,
 			);
 			name = BarcinCharts;
+			sourceTree = "<group>";
+		};
+		04B9FFC71C0C2E0A009E38AF /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				04B9FFC51C0BB02D009E38AF /* BarcinLineChartView.swift */,
+			);
+			name = Charts;
+			sourceTree = "<group>";
+		};
+		04B9FFC81C0C2E12009E38AF /* Renderers */ = {
+			isa = PBXGroup;
+			children = (
+				04B9FFC91C0C2E23009E38AF /* BarcinLineChartRenderer.swift */,
+			);
+			name = Renderers;
+			sourceTree = "<group>";
+		};
+		04B9FFCB1C0C2F21009E38AF /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				04B9FFCC1C0C2F2E009E38AF /* BarcinLineChartDataSet.swift */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 		06AEE7A31BDC3F8B009875AE /* ChartsTests */ = {
@@ -747,6 +777,7 @@
 				5B8FE2AF1B68F8F600910C9E /* LineScatterCandleChartDataSet.swift in Sources */,
 				5BAAA8561BB08E1D00B20D4D /* CombinedHighlighter.swift in Sources */,
 				5B680D211A9D17C30026A057 /* ChartLimitLine.swift in Sources */,
+				04B9FFCA1C0C2E23009E38AF /* BarcinLineChartRenderer.swift in Sources */,
 				5B6A54DB1AA74516000F57C2 /* PieChartData.swift in Sources */,
 				5B6A54D91AA74516000F57C2 /* LineChartDataSet.swift in Sources */,
 				5BD4C57D1BCDBF6C00462351 /* BarLineScatterCandleBubbleChartDataProvider.swift in Sources */,
@@ -805,6 +836,7 @@
 				5BD8F06D1AB897D500566E05 /* ChartViewPortHandler.swift in Sources */,
 				5B8FE2B11B68FFF900910C9E /* LineScatterCandleRadarChartRenderer.swift in Sources */,
 				5B6A54D51AA74516000F57C2 /* ChartData.swift in Sources */,
+				04B9FFCD1C0C2F2E009E38AF /* BarcinLineChartDataSet.swift in Sources */,
 				5BD4C57E1BCDBF6C00462351 /* BubbleChartDataProvider.swift in Sources */,
 				04B9FFC61C0BB02D009E38AF /* BarcinLineChartView.swift in Sources */,
 				5B6A54971AA66AD2000F57C2 /* BarChartRenderer.swift in Sources */,

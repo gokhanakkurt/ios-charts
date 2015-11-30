@@ -10,10 +10,11 @@ import Foundation
 
 
 public class BarcinLineChartView : LineChartView {
+    
     internal override func initialize()
     {
         super.initialize()
-        
-        renderer = LineChartRenderer(dataProvider: self, animator: _animator, viewPortHandler: _viewPortHandler)
+        renderer = BarcinLineChartRenderer(dataProvider: self, animator: _animator, viewPortHandler: _viewPortHandler)
     }
+    
 }
