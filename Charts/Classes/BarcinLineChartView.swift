@@ -23,6 +23,8 @@ public class BarcinLineChartView : LineChartView {
     
     var hValues : NSMutableArray = []
     
+    var totalTouches : Int = 0
+    
     internal override func initialize()
     {
         super.initialize()
@@ -37,6 +39,8 @@ public class BarcinLineChartView : LineChartView {
         self.removeGestureRecognizer(_pinchGestureRecognizer)
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("detectPan:"))
         panGestureRecognizer.delegate = self
+        panGestureRecognizer.cancelsTouchesInView = false
+        panGestureRecognizer.delaysTouchesEnded = false
         self.addGestureRecognizer(panGestureRecognizer)
     }
     
@@ -68,25 +72,17 @@ public class BarcinLineChartView : LineChartView {
                 self.hValues = []
                 for i in 1...recognizer.numberOfTouches() {
                     let touch = recognizer.locationOfTouch(i-1, inView: self)
-                    let chartH = getHighlightByTouchPoint(touch)! as ChartHighlight
-                    self.hValues.addObject(chartH)
-                    self.highlightValues(self.hValues as? [ChartHighlight], callDelegate: true)
+                    if touch.x < self.frame.width - 20 {
+                        let chartH = getHighlightByTouchPoint(touch)! as ChartHighlight
+                        self.hValues.addObject(chartH)
+                        self.highlightValues(self.hValues as? [ChartHighlight], callDelegate: true)
+                    }
                 }
             } else {
                 return;
             }
         }
         
-    }
-    
-    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if event?.touchesForView(self)?.count <= 2 {
-            for touch in (event?.touchesForView(self))! {
-                let chartH = getHighlightByTouchPoint(touch.locationInView(self))! as ChartHighlight
-                self.hValues.addObject(chartH)
-            }
-            self.highlightValues(self.hValues as? [ChartHighlight], callDelegate: true)
-        }
     }
     
     public func highlightValues(highs: [ChartHighlight]?, callDelegate: Bool)
@@ -124,12 +120,49 @@ public class BarcinLineChartView : LineChartView {
         setNeedsDisplay()
     }
     
-    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.hValues = []
-        _indicesToHighlight.removeAll()
+        self.totalTouches = (event?.touchesForView(self)?.count)!
+        if event?.touchesForView(self)?.count <= 2 {
+            for touch in (event?.touchesForView(self))! {
+                let chartH = getHighlightByTouchPoint(touch.locationInView(self))! as ChartHighlight
+                self.hValues.addObject(chartH)
+            }
+            self.highlightValues(self.hValues as? [ChartHighlight], callDelegate: true)
+        }
+    }
+    
+    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.totalTouches -= touches.count
+        for touch in touches {
+            let chartH = getHighlightByTouchPoint(touch.locationInView(self))! as ChartHighlight
+            for hValue in self.hValues as! [ChartHighlight] {
+                if let _ = hValue as? ChartHighlight {
+                    if hValue.xIndex == chartH.xIndex {
+                        self.hValues.removeObject(hValue)
+                    }
+                }
+            }
+            
+            for indice in _indicesToHighlight {
+                if indice.xIndex == chartH.xIndex {
+                    _indicesToHighlight.removeAtIndex(_indicesToHighlight.indexOf(indice)!)
+                }
+            }
+        }
+        if self.totalTouches > 0 {
+            var barcinDataEntries:[ChartDataEntry] = []
+            var barcinDataIndexes:[Int] = []
+            for high in _indicesToHighlight {
+                barcinDataEntries.append(_data.getEntryForHighlight(high)!)
+                barcinDataIndexes.append(high.dataSetIndex)
+            }
+            barcinDelegate?.chartValueSelected!(self, entries: barcinDataEntries, dataSetIndexes: barcinDataIndexes, highlights: _indicesToHighlight)
+        } else {
+            self.lastHighlighted = nil
+            delegate!.chartValueNothingSelected?(self)
+        }
         setNeedsDisplay()
-        self.lastHighlighted = nil
-        delegate!.chartValueNothingSelected?(self)
     }
     
 }

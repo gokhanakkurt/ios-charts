@@ -72,7 +72,7 @@ public class BarcinLineChartRenderer : LineChartRenderer {
             }
             
             if xIndex > maxx {
-                maxx = xIndex + 1
+                maxx = xIndex
             }
             
             if (CGFloat(xIndex) > CGFloat(chartXMax) * _animator.phaseX) { continue }
@@ -112,7 +112,7 @@ public class BarcinLineChartRenderer : LineChartRenderer {
             
             e1 = entries[minx]
             
-            let count = Int(ceil(CGFloat(maxx - minx) * phaseX + CGFloat(minx)))
+            let count = Int(ceil(CGFloat(maxx + 1 - minx) * phaseX + CGFloat(minx)))
             
             for (var x = count > 1 ? minx + 1 : minx, j = 0; x < count; x++)
             {
@@ -126,15 +126,13 @@ public class BarcinLineChartRenderer : LineChartRenderer {
             let size = max((count - minx - 1) * 2, 2)
             CGContextSetStrokeColorWithColor(context, set.highlightLineColor!.CGColor )
             CGContextStrokeLineSegments(context, _lineSegments, size)
-        } else if indices.count == 1 {
-            //createRect(context: context, str: "ananın amı", point: CGPoint(x: _highlightPointBuffer.x, y: -60))
         }
         
         let filled = super.generateFilledPath(
             entries,
             fillMin: set.fillFormatter?.getFillLinePosition(dataSet: set, dataProvider: dataProvider!) ?? 0.0,
             from: minx,
-            to: maxx,
+            to: maxx+1,
             matrix: trans!.valueToPixelMatrix)
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()
