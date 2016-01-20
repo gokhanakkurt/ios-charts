@@ -9,6 +9,9 @@
 import Foundation
 
 public class BarcinLineChartDataSet : LineChartDataSet {
+    
+    public var tag : Int = 0
+    
     public var gradientColors : CFArray = []
     
     public var highlightGradientColors : CFArray = []
