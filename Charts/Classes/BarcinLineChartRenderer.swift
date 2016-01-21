@@ -58,11 +58,13 @@ public class BarcinLineChartRenderer : LineChartRenderer {
     {
         guard let lineData = dataProvider?.lineData, chartXMax = dataProvider?.chartXMax else { return }
         CGContextSaveGState(context)
-        let set = lineData._dataSets.first as! BarcinLineChartDataSet
-        let trans = dataProvider?.getTransformer(set.axisDependency)
         var minx = 9999
         var maxx = 0
         for (var i = 0; i < indices.count; i++) {
+            
+            guard let set = lineData.getDataSetByIndex(indices[i].dataSetIndex) as? BarcinLineChartDataSet else { continue }
+            let trans = dataProvider?.getTransformer(set.axisDependency)
+            
             if !set.isHighlightEnabled { continue }
             
             let xIndex = indices[i].xIndex;
@@ -95,54 +97,70 @@ public class BarcinLineChartRenderer : LineChartRenderer {
             CGContextStrokePath(context)
         }
         
-        let entries = set.yVals
-        
-        if indices.count > 1 {
-            var e1: ChartDataEntry!
-            var e2: ChartDataEntry!
+        for (var i = 0; i < indices.count; i++)
+        {
+            guard let set = lineData.getDataSetByIndex(indices[i].dataSetIndex) as? BarcinLineChartDataSet else { continue }
             
-            if (_lineSegments.count != max((entries.count - 1) * 2, 2))
+            if !set.isHighlightEnabled
             {
-                _lineSegments = [CGPoint](count: max((entries.count - 1) * 2, 2), repeatedValue: CGPoint())
+                continue
             }
             
-            let phaseX = _animator.phaseX
-            let phaseY = _animator.phaseY
-            let valueToPixelMatrix = trans!.valueToPixelMatrix
-            
-            e1 = entries[minx]
-            
-            let count = Int(ceil(CGFloat(maxx + 1 - minx) * phaseX + CGFloat(minx)))
-            
-            for (var x = count > 1 ? minx + 1 : minx, j = 0; x < count; x++)
+            CGContextSetStrokeColorWithColor(context, set.highlightColor.CGColor)
+            CGContextSetLineWidth(context, set.highlightLineWidth)
+            if (set.highlightLineDashLengths != nil)
             {
-                e1 = entries[x == 0 ? 0 : (x - 1)]
-                e2 = entries[x]
-                
-                _lineSegments[j++] = CGPointApplyAffineTransform(CGPoint(x: CGFloat(e1.xIndex), y: CGFloat(e1.value) * phaseY), valueToPixelMatrix)
-                _lineSegments[j++] = CGPointApplyAffineTransform(CGPoint(x: CGFloat(e2.xIndex), y: CGFloat(e2.value) * phaseY), valueToPixelMatrix)
+                CGContextSetLineDash(context, set.highlightLineDashPhase, set.highlightLineDashLengths!, set.highlightLineDashLengths!.count)
+            }
+            else
+            {
+                CGContextSetLineDash(context, 0.0, nil, 0)
             }
             
-            let size = max((count - minx - 1) * 2, 2)
-            CGContextSetStrokeColorWithColor(context, set.highlightLineColor!.CGColor )
-            CGContextStrokeLineSegments(context, _lineSegments, size)
+            let xIndex = indices[i].xIndex; // get the x-position
+            
+            if (CGFloat(xIndex) > CGFloat(chartXMax) * _animator.phaseX)
+            {
+                continue
+            }
+            
+            let yValue = set.yValForXIndex(xIndex)
+            if (yValue.isNaN)
+            {
+                continue
+            }
+            
+            let y = CGFloat(yValue) * _animator.phaseY; // get the y-position
+            
+            _highlightPointBuffer.x = CGFloat(xIndex)
+            _highlightPointBuffer.y = y
+            
+            let trans = dataProvider?.getTransformer(set.axisDependency)
+            
+            trans?.pointValueToPixel(&_highlightPointBuffer)
+            
+            // draw the lines
+            //drawHighlightLines(context: context, point: _highlightPointBuffer, set: set)
+            
+            let entries = set.yVals
+            
+            let filled = super.generateFilledPath(
+                entries,
+                fillMin: set.fillFormatter?.getFillLinePosition(dataSet: set, dataProvider: dataProvider!) ?? 0.0,
+                from: minx,
+                to: maxx+1,
+                matrix: trans!.valueToPixelMatrix)
+            
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let colorLocations:[CGFloat] = [0.4, 1.0]
+            let gradient = CGGradientCreateWithColors(colorSpace, set.highlightGradientColors, colorLocations)
+            CGContextSetAlpha(context, CGFloat(0.8))
+            CGContextBeginPath(context)
+            CGContextAddPath(context, filled)
+            CGContextClip(context)
+            CGContextDrawLinearGradient(context, gradient, CGPoint.zero, CGPoint(x: 0, y: viewPortHandler.chartHeight*1.3), CGGradientDrawingOptions.DrawsAfterEndLocation)
+            
         }
-        
-        let filled = super.generateFilledPath(
-            entries,
-            fillMin: set.fillFormatter?.getFillLinePosition(dataSet: set, dataProvider: dataProvider!) ?? 0.0,
-            from: minx,
-            to: maxx+1,
-            matrix: trans!.valueToPixelMatrix)
-        
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorLocations:[CGFloat] = [0.4, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace, set.highlightGradientColors, colorLocations)
-        CGContextSetAlpha(context, CGFloat(0.8))
-        CGContextBeginPath(context)
-        CGContextAddPath(context, filled)
-        CGContextClip(context)
-        CGContextDrawLinearGradient(context, gradient, CGPoint.zero, CGPoint(x: 0, y: viewPortHandler.chartHeight*1.3), CGGradientDrawingOptions.DrawsAfterEndLocation)
         
         CGContextRestoreGState(context)
     }
