@@ -128,27 +128,30 @@ public class BarcinLineChartView : LineChartView {
                 let chartH = getHighlightByTouchPoint(touch.locationInView(self))! as ChartHighlight
                 self.hValues.addObject(chartH)
             }
-            self.highlightValues(self.hValues as? [ChartHighlight], callDelegate: true)
+            
+            let arr: [ChartHighlight] = self.hValues.flatMap({$0 as? ChartHighlight})
+            self.highlightValues(arr, callDelegate: true)
         }
     }
     
     public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.totalTouches -= touches.count
         for touch in touches {
-            let chartH = getHighlightByTouchPoint(touch.locationInView(self))! as ChartHighlight
-            for hValue in self.hValues as! [ChartHighlight] {
-                if let _ = hValue as? ChartHighlight {
-                    if hValue.xIndex == chartH.xIndex {
-                        self.hValues.removeObject(hValue)
-                    }
+            let chartH = getHighlightByTouchPoint(touch.locationInView(self))
+            let arr : [ChartHighlight] = self.hValues.flatMap({$0 as? ChartHighlight})
+            for hValue in arr {
+                if hValue.xIndex == chartH?.xIndex {
+                    self.hValues.removeObject(hValue)
                 }
             }
             
             for indice in _indicesToHighlight {
-                if indice.xIndex == chartH.xIndex {
+                if indice.xIndex == chartH?.xIndex {
                     _indicesToHighlight.removeAtIndex(_indicesToHighlight.indexOf(indice)!)
                 }
             }
+            
+            
         }
         if self.totalTouches > 0 {
             var barcinDataEntries:[ChartDataEntry] = []
