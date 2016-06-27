@@ -119,14 +119,15 @@ public class BarcinLineChartView : LineChartView {
         // redraw the chart
         setNeedsDisplay()
     }
-    
+        
     override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.hValues = []
         self.totalTouches = (event?.touchesForView(self)?.count)!
         if event?.touchesForView(self)?.count <= 2 {
             for touch in (event?.touchesForView(self))! {
-                let chartH = getHighlightByTouchPoint(touch.locationInView(self))! as ChartHighlight
-                self.hValues.addObject(chartH)
+                if let chartH = getHighlightByTouchPoint(touch.locationInView(self)){
+                    self.hValues.addObject(chartH)
+                }
             }
             
             let arr: [ChartHighlight] = self.hValues.flatMap({$0 as? ChartHighlight})
